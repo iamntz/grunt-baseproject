@@ -6,7 +6,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js nomsie"> <!--<![endif]-->
   <head>
     <meta charset="utf-8">
-    <title>base.project</title>
+    <title>{%= name %}</title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
@@ -20,8 +20,7 @@
       <link rel="apple-touch-icon" href="apple-touch-icon.png">
     -->
 
-    <!-- Useful when you need to disable zoom on all mobile devices. Probably is a good idea to not have this enabled -->
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="shortcut icon" href="favicon.ico">
 
@@ -36,7 +35,7 @@
 
     </div><!--/wrap-->
 
-    <script src="assets/dist/javascripts/vendor.min.js"></script>
+    <script src="assets/dist/vendor/vendor.min.js"></script>
     <script src="assets/dist/javascripts/{%= name %}.min.js" type="text/javascript"></script>
   </body>
 </html>
