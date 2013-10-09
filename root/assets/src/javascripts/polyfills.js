@@ -1,61 +1,43 @@
-if (!Object.create) {
-  Object.create = function (o) {
-    if (arguments.length > 1) {
-      throw new Error('Object.create implementation only accepts the first parameter.');
-    }
-    function F() {}
-    F.prototype = o;
-    return new F();
-  };
-}
+if (!Object.create) { Object.create = function (o) { if (arguments.length > 1) { throw new Error('Object.create implementation only accepts the first parameter.'); } function F() {} F.prototype = o; return new F(); }; }
 
 
 (function( $, document ){
-
   var enablePlaceholders = {
     init: function( el ){
-      var $t = this;
-      $t.el = $(el).data( 'hasplaceholder', true );
-      $t.placeholder = $t.el.attr('placeholder');
-      $t.addPlaceholder( $t.el );
+      var $this = this;
+      $this.el = $(el).data( 'hasplaceholder', true );
+      $this.placeholder = $this.el.attr('placeholder');
+      $this.addPlaceholder( $this.el );
     } // init
 
-    ,clearValue: function( e ){
-      if( $(e).val() === $(e).data('placeholder') ) {
-        $(e).val('');
-      }
-    }//clearValue
-
     ,addPlaceholder: function(){
-      var $t = this;
-        $t.maybeShowPlaceholder();
-      $t.el.bind('blur.ntz_placeholder', $.proxy( $t.maybeShowPlaceholder, $t ) );
-      $t.el.bind('focus.ntz_placeholder', $.proxy( $t.maybeHidePlaceholder, $t ) );
+      var $this = this;
+      $this.maybeShowPlaceholder();
+      $this.el.bind('blur.ntz_placeholder', $.proxy( $this.maybeShowPlaceholder, $this ) );
+      $this.el.bind('focus.ntz_placeholder', $.proxy( $this.maybeHidePlaceholder, $this ) );
     } //addPlaceholder
 
     ,maybeShowPlaceholder: function(){
-      var $t = this;
-      if( $.trim( $t.el.val() ) !== '' ){ return; }
-      $t.el
+      var $this = this;
+      if( $.trim( $this.el.val() ) !== '' ){ return; }
+      $this.el
         .addClass('placeholder')
-        .val( $t.placeholder );
+        .val( $this.placeholder );
     }//maybeShowPlaceholder
 
     ,maybeHidePlaceholder: function(){
-      var $t = this;
-      if( $t.el.hasClass('placeholder') &&
-          $t.el.val() == $t.placeholder ){
-        $t.el.val('');
+      var $this = this;
+      if( $this.el.hasClass('placeholder') && $this.el.val() == $this.placeholder ){
+        $this.el.val('');
       }
     }//maybeHidePlaceholder
   };
 
   $.fn.enablePlaceholders = function() {
-    var fakeInput = document.createElement("input"),
-        nativePlaceholder = ("placeholder" in fakeInput);
+    var fakeInput = document.createElement("input");
+    var nativePlaceholder = ("placeholder" in fakeInput);
 
     if (!nativePlaceholder) {
-
       $('input[placeholder], textarea[placeholder]').filter(function(){
         return !$(this).data('hasplaceholder');
       }).each(function(){
@@ -66,7 +48,6 @@ if (!Object.create) {
       return this;
     }
   };
-
 })( jQuery, document );
 
 
@@ -77,8 +58,8 @@ if (!Object.create) {
 // fixes from Paul Irish and Tino Zijdel
 
 (function() {
-  var lastTime = 0,
-      vendors  = [ 'ms', 'moz', 'webkit', 'o' ];
+  var lastTime = 0;
+  var vendors  = [ 'ms', 'moz', 'webkit', 'o' ];
 
   for( var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x ){
     window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];

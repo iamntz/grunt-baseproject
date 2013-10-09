@@ -8,18 +8,17 @@ module.exports = function(grunt) {
       files: [
         'Gruntfile.js'
         ,'<%= uglify.app.src %>'
-        // ,'<%= uglify.admin.src %>'
       ],
       options: {
         globals: {
-          jQuery: true
-          ,console: true
-          ,module: true
+          jQuery   : true
+          ,console : true
+          ,module  : true
           ,document: true
         },
         laxcomma : true
-        ,laxbreak : true
-        ,sub: true
+        ,laxbreak: true
+        ,sub     : true
       }
     },
 
@@ -44,23 +43,15 @@ module.exports = function(grunt) {
         src: [
           'assets/src/javascripts/*.js'
           ,'assets/src/javascripts/**/*.js'
-          ,'!assets/src/javascripts/admin/*.js'
-          ,'!assets/src/javascripts/admin/**/*.js'
-        ]
-        ,dest: 'assets/dist/javascripts/<%= pkg.name %>.min.js'
+        ],
+        dest: 'assets/dist/javascripts/<%= pkg.name %>.min.js'
       }
 
-      // ,admin: {
-      //   src: [
-      //     'assets/src/javascripts/admin/*.js',
-      //     'assets/src/javascripts/admin/**/*.js'
-      //   ]
-      //   ,dest: 'assets/dist/javascripts/<%= pkg.name %>.admin.min.js'
-      // }
-
       ,vendor : {
-        src: [ 'assets/src/vendor/jquery/jquery-1.10.2.js' ]
-        , dest: 'assets/dist/vendor/vendor.min.js'
+        src: [
+          'assets/src/vendor/jquery/jquery-2.0.2.js'
+        ],
+        dest: 'assets/dist/vendor/vendor.min.js'
       }
     },
 
@@ -68,87 +59,70 @@ module.exports = function(grunt) {
       all: [ "assets/src/tests/*.html"]
     },
 
+
     // styles
     sass: {
       options: {
-        style    : 'compressed'
-        , sourcemap:true
-      }
-      ,app: {
+        style    : 'expanded',
+        sourcemap:true
+      },
+      app: {
         src : [
           'assets/src/stylesheets/*.scss'
           ,'assets/src/stylesheets/**/*.scss'
-          ,'!assets/src/stylesheets/admin/*.scss'
-          ,'!assets/src/stylesheets/admin/**/*.scss'
-        ]
-        ,dest : 'assets/dist/stylesheets/screen.css'
+        ],
+        dest : 'assets/dist/stylesheets/screen.css',
+        options : {
+          // compass  : true
+        }
       }
-      // ,admin: {
-      //   src : [ 'assets/src/stylesheets/admin/*.scss', 'assets/src/stylesheets/admin/**/*.scss' ]
-      //   ,dest: 'assets/dist/stylesheets/admin.css'
-      // }
     },
 
 
     // the rest of the assets
-
-    // spritesheet: {
-    //   options: {
-    //     outputImage: 'images/sprites.png',
-    //     outputCss: 'stylesheets/modules/_sprites.scss',
-    //     selector: '.spr',
-    //     httpImagePath : '../images/sprites.png'
-    //   },
-    //   app: {
-    //     src: ['assets/images/sprites/*'],
-    //     dest: 'assets'
-    //   }
-    // },
     copy : {
       assets: {
         files: [
           {
-            expand: true
-            ,cwd: 'assets/src'
-            ,src: [
+            expand: true,
+            cwd: 'assets/src',
+            src: [
               'vendor/**/*'
               ,'images/*'
               ,'images/**/*'
               ,'fonts/**/*'
-            ]
-            ,dest: 'assets/dist/'
+            ],
+            dest: 'assets/dist/'
           }
         ]
       }
     },
 
+
     // awesomeness
     watch: {
       options: {
-        nospawn: true
+        nospawn       : true
         ,debounceDelay: 250
-        ,livereload: true
-      }
+      },
 
-      ,qunit : {
+      qunit : {
         files: [
           'assets/src/tests/*.test.html'
           ,'assets/src/tests/*.test.js'
-        ]
-        ,tasks: [ 'jshint', 'qunit' ]
-      }
+        ],
+        tasks: [ 'jshint', 'qunit' ]
+      },
 
-      ,css: {
-        files: [ '<%= sass.app.src %>' ]
-        ,tasks: [ "css" ]
-      }
+      css: {
+        options: {
+          livereload: true
+        },
+        files: [ '<%= sass.app.src %>' ],
+        tasks: ["css"]
+      },
 
-      // ,admin : {
-      //   files: [ '<%= sass.admin.src %>', '<%= uglify.admin.src %>' ],
-      //   tasks : [ "admin" ]
-      // }
-
-      ,assets : {
+      assets : {
         files: [
           'assets/src/vendor/**/*'
           ,'assets/src/images/*'
@@ -156,17 +130,32 @@ module.exports = function(grunt) {
           ,'assets/src/fonts/**/*'
         ],
         tasks: [ 'copy' ]
-      }
+      },
 
-      ,js : {
-        files: [ '<%= uglify.app.src %>' ]
-        ,tasks: [ 'jshint', 'uglify' ]
+      js : {
+        files: [ '<%= uglify.app.src %>' ],
+        tasks: [ 'jshint', 'uglify' ]
       }
     },
 
+
     csscss: {
       dist: {
-        src: [ '<%= sass.admin.dest %>', '<%= sass.app.dest %>' ]
+        src: [ '<%= sass.app.dest %>' ]
+      }
+    },
+
+
+    sprite:{
+      all: {
+        src         : ['assets/src/images/sprites/*.png']
+        ,destImg    : 'assets/dist/images/sprites.png'
+        ,imgPath    : '../images/sprites.png'
+        ,algorithm  : 'binary-tree'
+        ,padding    : 10
+        ,engine     : 'auto'
+        ,destCSS    : 'assets/src/stylesheets/sprites/_sprites.scss'
+        ,cssTemplate: 'assets/helpers/spritesmith.sass.template.mustache'
       }
     }
   });
@@ -175,18 +164,18 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-csscss');
-  grunt.loadNpmTasks('node-spritesheet');
+  grunt.loadNpmTasks('grunt-spritesmith');
 
 
-  grunt.registerTask('js', [ 'jshint',/* 'qunit',*/ 'uglify']);
-  grunt.registerTask('css', [ 'sass' ]);
+
+  grunt.registerTask('js', [ 'jshint', 'qunit', 'uglify']);
+  grunt.registerTask('css', [ 'sprite', 'sass' ]);
   grunt.registerTask('assets', [ 'copy' ]);
-  grunt.registerTask('admin', [ 'sass:admin', 'uglify:admin' ]);
 
   grunt.registerTask('default', [ 'js', 'css', 'assets' ]);
+  grunt.registerTask('dev', ['watch']);
 };
